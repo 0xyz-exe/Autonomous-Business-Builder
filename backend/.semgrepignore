@@ -1,0 +1,6 @@
+# Exclude large auto-generated folders from Semgrep indexing
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/

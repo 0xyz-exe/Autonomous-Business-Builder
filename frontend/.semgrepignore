@@ -1,0 +1,9 @@
+# Exclude large auto-generated folders from Semgrep indexing
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.cache/
+out/
+.turbo/

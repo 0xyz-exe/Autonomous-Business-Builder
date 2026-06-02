@@ -1,0 +1,67 @@
+---
+description: Autonomous Business Builder — MVP stack, architecture, and agent rules
+alwaysApply: true
+---
+
+# Autonomous Business Builder
+
+## Goal
+
+Convert `businessIdea`, `targetMarket`, `country`, `budget` into: Market Analysis, Branding, Landing Page copy, Marketing Content, Sales Strategy, Analytics (KPIs/roadmap).
+
+## Stack
+
+- Frontend: `frontend/` — Next.js 15, TypeScript (strict), Tailwind
+- Backend: `backend/app/` — FastAPI, SQLAlchemy async, Alembic, PostgreSQL JSONB
+- AI: OpenAI via `BaseAgent`; `OPENAI_API_KEY=mock` → `_mock_output()` with `prior_results`
+- DB default: `sqlite+aiosqlite:///./business_builder.db` (Docker uses Postgres)
+- Validate agent JSON via `app/agent_outputs.py` before save
+- Pipeline: `app/services/agent_pipeline.py`
+
+## Layout
+
+```
+backend/app/
+  main.py, models.py, schemas.py, database.py, config.py
+  routers/   projects.py, agents.py, results.py
+  agents/    base_agent.py, market_agent.py, branding_agent.py,
+             content_agent.py, sales_agent.py, analytics_agent.py
+frontend/src/
+  app/           page.tsx, new-business/, projects/, results/[id]/
+  components/    Navbar, AgentCard, ProgressTracker, ResultsPanel
+  lib/api.ts     types/index.ts
+```
+
+## Models
+
+- `BusinessProject`: id, business_idea, target_market, country, budget, status, created_at
+- `AgentResult`: id, project_id, agent_name (`market|branding|content|sales|analytics`), result_json, created_at
+
+## API
+
+| Method | Path | Notes |
+|--------|------|-------|
+| POST | `/projects` | Create project; background runs all 5 agents |
+| GET | `/projects`, `/projects/{id}` | List / detail + results |
+| GET | `/results/{project_id}` | Agent results only |
+| POST | `/agents/run` | Single agent on demand |
+
+## Agent pipeline
+
+1. market → 2. branding → 3. content → 4. sales → 5. analytics. Later agents use `prior_results` from earlier steps.
+
+New agent: subclass `BaseAgent`, implement `name`, `_system_prompt()`, `_mock_output()`, register in pipeline/router.
+
+## Rules
+
+- MVP only — no new deps unless required
+- Backend first for API/data; frontend uses `lib/api.ts`
+- JSON outputs only; validate with Pydantic schemas
+- Reuse `BaseAgent`, existing routers, components
+- No overengineering; prefer simple solutions
+- Env: `backend/.env`, `frontend/.env.local`, root `.env` for Docker
+
+## Build order
+
+1. Schema/model → service/agent → router → frontend page/component
+2. Test with `OPENAI_API_KEY=mock`
