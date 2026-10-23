@@ -2,6 +2,22 @@
 
 > Transform a business idea into a complete business package in minutes using 5 specialized AI agents.
 
+Repository: https://github.com/0xyz-exe/Autonomous-Business-Builder
+
+## Screenshots
+
+### Multi-Agent Orchestration Pipeline
+![Agent pipeline](docs/screenshots/01_agent_pipeline.png)
+
+### Market Research & SWOT Analysis
+![Market research](docs/screenshots/02_market_analysis.png)
+
+### Branding & Identity Generation
+![Branding](docs/screenshots/03_branding.png)
+
+### 90-Day Growth Roadmap & KPI Projections
+![Growth roadmap](docs/screenshots/04_growth_roadmap.png)
+
 ![Tech Stack](https://img.shields.io/badge/Next.js-16-black?style=flat-square) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square) ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=flat-square)
 
 **Status: MVP complete** — 5 agents, full UI, mock mode, SQLite local dev, Docker for production.
